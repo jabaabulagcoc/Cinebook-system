@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Main {
+public class program2 {
 
     static Scanner scanner = new Scanner(System.in);
 
@@ -23,12 +23,12 @@ public class Main {
     static ArrayList<Integer> movieYears = new ArrayList<>();
     static ArrayList<Double> moviePrices = new ArrayList<>();
 
-    // logged in user index, -1 means no one is logged in
+    // -1 means no one is logged in
     static int loggedInIndex = -1;
 
     public static void main(String[] args) {
 
-        // add default users
+        // default users
         usernames.add("admin");
         passwords.add("Admin1234");
         emails.add("admin@cinebook.com");
@@ -204,90 +204,143 @@ public class Main {
 
     static void loginUser() {
         System.out.println("\n--------------------------------------------------");
-        System.out.println("  LOGIN");
+        System.out.println("  LOGIN  (type 'cancel' anytime to go back)");
         System.out.println("--------------------------------------------------");
-        System.out.print("  Username: ");
-        String username = scanner.nextLine().trim();
-        System.out.print("  Password: ");
-        String password = scanner.nextLine();
 
-        boolean found = false;
-        for (int i = 0; i < usernames.size(); i++) {
-            if (usernames.get(i).equals(username) && passwords.get(i).equals(password)) {
-                loggedInIndex = i;
-                found = true;
-                System.out.println("  Welcome back, " + username + "! Role: " + roles.get(i));
+        while (true) {
+            System.out.print("  Username: ");
+            String username = scanner.nextLine().trim();
+            if (username.equalsIgnoreCase("cancel")) {
+                System.out.println("  Login cancelled.");
+                return;
+            }
+
+            System.out.print("  Password: ");
+            String password = scanner.nextLine();
+            if (password.equalsIgnoreCase("cancel")) {
+                System.out.println("  Login cancelled.");
+                return;
+            }
+
+            boolean found = false;
+            for (int i = 0; i < usernames.size(); i++) {
+                if (usernames.get(i).equals(username) && passwords.get(i).equals(password)) {
+                    loggedInIndex = i;
+                    found = true;
+                    System.out.println("  Welcome back, " + username + "! Role: " + roles.get(i));
+                    break;
+                }
+            }
+
+            if (found == false) {
+                System.out.println("  Invalid username or password. Please try again.");
+            } else {
                 break;
             }
-        }
-
-        if (found == false) {
-            System.out.println("  Invalid username or password.");
         }
     }
 
     static void registerUser() {
         System.out.println("\n--------------------------------------------------");
-        System.out.println("  REGISTER");
+        System.out.println("  REGISTER  (type 'cancel' anytime to go back)");
         System.out.println("--------------------------------------------------");
 
-        System.out.print("  Username: ");
-        String username = scanner.nextLine().trim();
+        // username loop
+        String username = "";
+        while (true) {
+            System.out.print("  Username: ");
+            username = scanner.nextLine().trim();
 
-        if (username.equals("")) {
-            System.out.println("  Username cannot be empty.");
-            return;
-        }
-
-        // check if username already exists
-        for (int i = 0; i < usernames.size(); i++) {
-            if (usernames.get(i).equals(username)) {
-                System.out.println("  Username is already taken.");
+            if (username.equalsIgnoreCase("cancel")) {
+                System.out.println("  Registration cancelled.");
                 return;
             }
-        }
 
-        System.out.print("  Password: ");
-        String password = scanner.nextLine();
-
-        if (password.length() < 8) {
-            System.out.println("  Password must be at least 8 characters.");
-            return;
-        }
-
-        // check for uppercase
-        boolean hasUpper = false;
-        for (int i = 0; i < password.length(); i++) {
-            if (Character.isUpperCase(password.charAt(i))) {
-                hasUpper = true;
-                break;
+            if (username.equals("")) {
+                System.out.println("  Username cannot be empty. Try again.");
+                continue;
             }
-        }
-        if (hasUpper == false) {
-            System.out.println("  Password must have at least one uppercase letter.");
-            return;
-        }
 
-        // check for digit
-        boolean hasDigit = false;
-        for (int i = 0; i < password.length(); i++) {
-            if (Character.isDigit(password.charAt(i))) {
-                hasDigit = true;
-                break;
+            // check if username already exists
+            boolean taken = false;
+            for (int i = 0; i < usernames.size(); i++) {
+                if (usernames.get(i).equals(username)) {
+                    taken = true;
+                    break;
+                }
             }
-        }
-        if (hasDigit == false) {
-            System.out.println("  Password must have at least one number.");
-            return;
+
+            if (taken == true) {
+                System.out.println("  Username is already taken. Try another.");
+                continue;
+            }
+
+            break;
         }
 
-        System.out.print("  Email: ");
-        String email = scanner.nextLine().trim();
+        // password loop
+        String password = "";
+        while (true) {
+            System.out.print("  Password: ");
+            password = scanner.nextLine();
 
-        // basic email check
-        if (!email.contains("@") || !email.contains(".")) {
-            System.out.println("  Invalid email address.");
-            return;
+            if (password.equalsIgnoreCase("cancel")) {
+                System.out.println("  Registration cancelled.");
+                return;
+            }
+
+            if (password.length() < 8) {
+                System.out.println("  Password must be at least 8 characters. Try again.");
+                continue;
+            }
+
+            // check for uppercase
+            boolean hasUpper = false;
+            for (int i = 0; i < password.length(); i++) {
+                if (Character.isUpperCase(password.charAt(i))) {
+                    hasUpper = true;
+                    break;
+                }
+            }
+            if (hasUpper == false) {
+                System.out.println("  Password must have at least one uppercase letter. Try again.");
+                continue;
+            }
+
+            // check for digit
+            boolean hasDigit = false;
+            for (int i = 0; i < password.length(); i++) {
+                if (Character.isDigit(password.charAt(i))) {
+                    hasDigit = true;
+                    break;
+                }
+            }
+            if (hasDigit == false) {
+                System.out.println("  Password must have at least one number. Try again.");
+                continue;
+            }
+
+            break;
+        }
+
+        // email loop
+        String email = "";
+        while (true) {
+            System.out.print("  Email: ");
+            email = scanner.nextLine().trim();
+
+            if (email.equalsIgnoreCase("cancel")) {
+                System.out.println("  Registration cancelled.");
+                return;
+            }
+
+            // basic email check
+            if (!email.contains("@") || !email.contains(".")) {
+                System.out.println("  Invalid email address. Try again.");
+                continue;
+            }
+
+            break;
         }
 
         usernames.add(username);
@@ -392,7 +445,7 @@ public class Main {
             return;
         }
 
-        // deduct balance
+        // minus balance
         double newBalance = balances.get(loggedInIndex) - total;
         newBalance = Math.round(newBalance * 100.0) / 100.0;
         balances.set(loggedInIndex, newBalance);
@@ -400,7 +453,7 @@ public class Main {
         // generate booking code
         String bookingCode = generateBookingCode();
 
-        // save ticket as a string: "bookingCode|movieTitle|totalPaid|date"
+        // save ticket as string: "bookingCode|movieTitle|totalPaid|date"
         String ticketInfo = bookingCode + "|" + movieTitles.get(movieIndex) + "|" + total + "|" + new Date().toString();
         allTickets.get(loggedInIndex).add(ticketInfo);
 
