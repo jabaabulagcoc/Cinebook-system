@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
-public class program2 {
+public class Main {
 
     static Scanner scanner = new Scanner(System.in);
 
